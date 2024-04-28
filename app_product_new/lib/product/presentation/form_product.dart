@@ -20,6 +20,10 @@ class _FormProductState extends State<FormProduct> {
   final ExcelServices excelHelper = ExcelServices();
   final SaveDatainSharedPreferences saveData = SaveDatainSharedPreferences();
 
+  void saveExcel() async {
+    await excelHelper.saveProductsToExcel(context);
+  }
+
   void _saveProduct() async {
     if (_formKey.currentState!.validate()) {
       // Crea un nuevo objeto Producto
@@ -53,14 +57,13 @@ class _FormProductState extends State<FormProduct> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () async {
-            excelHelper.saveProductsToExcel(context);
+            saveExcel();
 
             // Verificar la existencia del archivo después de guardarlo
             await excelHelper.checkFileExists();
@@ -153,4 +156,5 @@ class _FormProductState extends State<FormProduct> {
     // Abrir el archivo utilizando open_file
     OpenFile.open(excelFilePath);
   }
+
 }

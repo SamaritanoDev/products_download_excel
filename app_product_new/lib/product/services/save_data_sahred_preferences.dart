@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:app_product_new/product/domain/product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SaveDatainSharedPreferences{
+class SaveDatainSharedPreferences {
   Future<void> saveProducts(List<Producto> productos) async {
     final prefs = await SharedPreferences.getInstance();
 

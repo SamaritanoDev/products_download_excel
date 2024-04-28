@@ -2,7 +2,9 @@ import 'package:app_product_new/product/presentation/form_product.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const MainApp(),
+  );
 }
 
 class MainApp extends StatelessWidget {

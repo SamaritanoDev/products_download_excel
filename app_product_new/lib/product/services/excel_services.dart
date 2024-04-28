@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:excel/excel.dart' as excel;
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -35,7 +36,8 @@ class ExcelServices {
     // Obtener el directorio de almacenamiento externo
     String externalStoragePath = await getExternalStoragePath();
     // Combinar la ruta del directorio con el nombre del archivo
-    String excelFileName = 'pesos_niños_modificado.xlsx';
+    String excelFileName =
+        'ventas_${DateTime.now().toString().replaceAll(RegExp(r'[^\w\s\.]'), '_')}.xlsx';
     return '$externalStoragePath/$excelFileName';
   }
 
@@ -55,7 +57,7 @@ class ExcelServices {
 
   Future<void> saveProductsToExcel(BuildContext contextRef) async {
     try {
-      // Verificar los permisos de escritura en el almacenamiento externo
+      //Verificar los permisos de escritura en el almacenamiento externo
       if (await requestPer(Permission.storage) == true) {
         print('Permiso concedido');
       } else {
@@ -64,11 +66,10 @@ class ExcelServices {
       }
 
       // Cargar el archivo de Excel existente desde los activos
-      final SaveDatainSharedPreferences saveData =
-          SaveDatainSharedPreferences();
+      final SaveDatainSharedPreferences saveData = SaveDatainSharedPreferences();
       // Cree un libro de Excel a partir de la plantilla
-      var file = "assets/plantilla_ventas.xlsx";
-      var bytes = File(file).readAsBytesSync();
+      ByteData file = await rootBundle.load('assets/plantilla_ventas.xlsx');
+      List<int> bytes = file.buffer.asUint8List();
       var workbook = Excel.decodeBytes(bytes);
 
       // Obtenga la hoja de trabajo de "ventas"
